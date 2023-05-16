@@ -1,0 +1,11 @@
+{
+  "fornecedores": [
+    {
+      "id": 1,
+      "name": "Joaquin",
+      "active": false,
+      "category": "Regional",
+      "contact": "146136416"
+    }
+  ]
+}

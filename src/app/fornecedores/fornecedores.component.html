@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="col-8 m-auto mt-5">
+    <form [formGroup] = "formGroupFornecedor">
+
+      <div class="mb-3">
+        <label for="name" class="form-label">Nome</label>
+        <input type="text" formControlName="name" class="form-control" id="name" placeholder="Digite seu Nome">
+      </div>
+
+      <div class="mb-3">
+
+      </div>
+
+      <div class="mb-3">
+        <label for="contact" class="form-label">Contato</label>
+        <input type="text" formControlName="contact" class="form-control" id="contact" placeholder="Digite seu Contato">
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<h5 class="card-title mt-5 mb-3">Fornecedores</h5>
+<table class="col-8 m-auto table table-striped" >
+  <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Nome</th>
+      <th scope="col">Email</th>
+      <th scope="col">RA</th>
+      <th scope="col">Telefone</th>
+      <th scope="col">Turma</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let estudante of estudantes">
+      <th scope="row">{{ estudante.id }}</th>
+      <td>{{ estudante.name }}</td>
+      <td>{{ estudante.email }}</td>
+      <td>{{ estudante.ra }}</td>
+      <td>{{ estudante.telefone }}</td>
+      <td>{{ estudante.turma }}</td>
+    </tr>
+  </tbody>
+</table>
+
+
