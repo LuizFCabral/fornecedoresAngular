@@ -1,26 +1,28 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Fornecedores } from '../fornecedores';
 import { FornecedoresService } from '../fornecedores.service';
 
 @Component({
   selector: 'app-fornecedores',
   templateUrl: './fornecedores.component.html',
-  styleUrls: ['./fornecedores.component.css']
+  styleUrls: ['./fornecedores.component.css'],
 })
 export class FornecedoresComponent {
-
-  fornecedores: Fornecedores[]  = [];
+  fornecedores: Fornecedores[] = [];
   formGroupFornecedor: FormGroup;
   isEditing: boolean = false;
   currentFornecedores: Fornecedores = {} as Fornecedores;
 
-  constructor(private fornecedoresService: FornecedoresService, private formBuilder: FormBuilder) {
+  constructor(
+    private fornecedoresService: FornecedoresService,
+    private formBuilder: FormBuilder
+  ) {
     this.formGroupFornecedor = formBuilder.group({
       id: [''],
-      name: [''],
-      active: Boolean,
-      category: [''],
+      name: ['', [Validators.required]],
+      active: [false],
+      category: ['', [Validators.required]],
       contact: [''],
     });
   }
@@ -29,51 +31,56 @@ export class FornecedoresComponent {
     this.getFornecedores();
   }
 
-  getFornecedores(){
+  getFornecedores() {
     this.fornecedoresService.getFornecedores().subscribe({
       next: (data) => {
         this.fornecedores = data;
         console.log(this.fornecedores);
       },
-      error: ()=> console.log("Error to call endpoint")
-
+      error: () => console.log('Error to call endpoint'),
     });
   }
 
-  save(){
-    if(this.isEditing){
-      this.fornecedoresService.edit(this.formGroupFornecedor.value).subscribe({
-        next: data => {
-          let index = this.fornecedores.indexOf(this.currentFornecedores);
-          this.fornecedores[index] = data;
-        }
-      })
-      this.isEditing = false;
+  save() {
+    if (this.formGroupFornecedor.valid) {
+      if (this.isEditing) {
+        this.fornecedoresService
+          .edit(this.formGroupFornecedor.value)
+          .subscribe({
+            next: (data) => {
+              let index = this.fornecedores.indexOf(this.currentFornecedores);
+              this.fornecedores[index] = data;
+            },
+          });
+        this.isEditing = false;
+      } else alert('Formulário inválido');
+    } else {
+      if (this.formGroupFornecedor.valid) {
+        this.fornecedoresService
+          .save(this.formGroupFornecedor.value)
+          .subscribe({
+            next: (data) => {
+              this.fornecedores.push(data);
+              console.log(this.fornecedores);
+            },
+          });
+        this.formGroupFornecedor.reset();
+      } else alert('Formulário invalido');
     }
-    else{
-      this.fornecedoresService.save(this.formGroupFornecedor.value).subscribe({
-        next: data => {
-          this.fornecedores.push(data);
-          console.log(this.fornecedores);
-        }
-      })
-    }
-    this.formGroupFornecedor.reset();
   }
 
-  remove(fornecedor: Fornecedores){
+  remove(fornecedor: Fornecedores) {
     this.fornecedoresService.remove(fornecedor).subscribe({
       next: () => {
         let index = this.fornecedores.indexOf(fornecedor);
         this.fornecedores.splice(index, 1);
-      }
+      },
     });
   }
 
-  edit(fornecedor: Fornecedores){
-    this.formGroupFornecedor.setValue(fornecedor)
+  edit(fornecedor: Fornecedores) {
+    this.formGroupFornecedor.setValue(fornecedor);
     this.currentFornecedores = fornecedor;
-    this.isEditing = true
+    this.isEditing = true;
   }
-
 }

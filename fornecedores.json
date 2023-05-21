@@ -3,9 +3,30 @@
     {
       "id": 1,
       "name": "Joaquin",
-      "active": false,
+      "active": true,
       "category": "Regional",
       "contact": "146136416"
+    },
+    {
+      "id": 2,
+      "name": "Peças e Tralhas",
+      "active": false,
+      "category": "nacional",
+      "contact": "40028922"
+    },
+    {
+      "id": 6,
+      "name": "Dr. Sapators",
+      "active": true,
+      "category": "internacional",
+      "contact": "28061685"
+    },
+    {
+      "id": 7,
+      "name": "José Bnifacio",
+      "active": true,
+      "category": null,
+      "contact": "32648567"
     }
   ]
 }
