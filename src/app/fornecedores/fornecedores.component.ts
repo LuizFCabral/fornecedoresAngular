@@ -42,30 +42,22 @@ export class FornecedoresComponent {
   }
 
   save() {
-    if (this.formGroupFornecedor.valid) {
-      if (this.isEditing) {
-        this.fornecedoresService
-          .edit(this.formGroupFornecedor.value)
-          .subscribe({
-            next: (data) => {
-              let index = this.fornecedores.indexOf(this.currentFornecedores);
-              this.fornecedores[index] = data;
-            },
-          });
-        this.isEditing = false;
-      } else alert('Formulário inválido');
+    if (this.isEditing) {
+      this.fornecedoresService.edit(this.formGroupFornecedor.value).subscribe({
+        next: () => {
+          this.getFornecedores();
+          this.formGroupFornecedor.reset();
+          this.isEditing = false;
+        },
+      });
     } else {
-      if (this.formGroupFornecedor.valid) {
-        this.fornecedoresService
-          .save(this.formGroupFornecedor.value)
-          .subscribe({
-            next: (data) => {
-              this.fornecedores.push(data);
-              console.log(this.fornecedores);
-            },
-          });
-        this.formGroupFornecedor.reset();
-      } else alert('Formulário invalido');
+      this.fornecedoresService.save(this.formGroupFornecedor.value).subscribe({
+        next: (data) => {
+          this.fornecedores.push(data);
+          console.log(this.fornecedores);
+        },
+      });
+      this.formGroupFornecedor.reset();
     }
   }
 
